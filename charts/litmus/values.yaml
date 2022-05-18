@@ -114,7 +114,7 @@ portal:
       timeoutSeconds: 1
     service:
       annotations: {}
-      type: NodePort
+      type: ClusterIP
       port: 9091
       targetPort: 8080
     virtualService:
@@ -259,7 +259,7 @@ portal:
           ephemeral-storage: "1Gi"
     service:
       annotations: {}
-      type: NodePort
+      type: ClusterIP
       graphqlServer:
         port: 9002
         targetPort: 8080
