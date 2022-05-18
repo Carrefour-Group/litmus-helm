@@ -12,6 +12,7 @@ customLabels:
 # my.company.com/concourse-cd: 2
 
 adminConfig:
+  existingSecret: ""
   DBUSER: "admin"
   DBPASSWORD: "1234"
   JWTSecret: "litmus-portal@123"
@@ -20,6 +21,7 @@ adminConfig:
   # -- leave empty if uses Mongo DB deployed by this chart
   DB_SERVER: ""
   DB_PORT: "27017"
+  DB_ExtraParams: "" #--- add extra parmas to connection string when using external database
   ADMIN_USERNAME: "admin"
   ADMIN_PASSWORD: "litmus"
 
@@ -275,6 +277,7 @@ portal:
     affinity: {}
 
 mongo:
+  enabled: false
   replicas: 1
   customLabels:
     {}

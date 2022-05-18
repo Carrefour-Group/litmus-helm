@@ -34,6 +34,8 @@ spec:
       {{- end }}
       volumes:
         {{- toYaml .Values.portal.server.graphqlServer.volumes | default "" | nindent 8 }}
+      #Add init container to test mongo connection 
+      {{- if .Values.mongo.enabled }}
       initContainers:
         - name: wait-for-mongodb
           image: {{ .Values.image.imageRegistryName }}/{{ .Values.portal.server.waitForMongodb.image.repository }}:{{ .Values.portal.server.waitForMongodb.image.tag }}
@@ -45,6 +47,7 @@ spec:
             ]
           resources:
             {{- toYaml .Values.portal.server.waitForMongodb.resources | nindent 12 }}
+      {{- end }}  
       containers:
         - name: graphql-server
           image: {{ .Values.image.imageRegistryName }}/{{ .Values.portal.server.graphqlServer.image.repository }}:{{ .Values.portal.server.graphqlServer.image.tag }}
@@ -69,7 +72,11 @@ spec:
             {{- toYaml .Values.portal.server.graphqlServer.readinessProbe | nindent 12 }}
           envFrom:
             - secretRef:
+                {{- if .Values.adminConfig.existingSecret }}
+                name: {{ .Values.adminConfig.existingSecret }}
+                {{- else }}
                 name: {{ include "litmus-portal.fullname" . }}-admin-secret
+                {{- end }}
             - configMapRef:
                 name: {{ include "litmus-portal.fullname" . }}-admin-config
           env:

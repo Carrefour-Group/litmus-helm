@@ -1,3 +1,4 @@
+{{- if .Values.mongo.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -70,12 +71,20 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               valueFrom:
                 secretKeyRef:
+                  {{- if .Values.adminConfig.existingSecret }}
+                  name: {{ .Values.adminConfig.existingSecret }}
+                  {{- else }}
                   name: {{ include "litmus-portal.fullname" . }}-admin-secret
+                  {{- end }}
                   key: DB_USER
             - name: MONGO_INITDB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  {{- if .Values.adminConfig.existingSecret }}
+                  name: {{ .Values.adminConfig.existingSecret }}
+                  {{- else }}
                   name: {{ include "litmus-portal.fullname" . }}-admin-secret
+                  {{- end }}
                   key: DB_PASSWORD
     {{- with .Values.mongo.nodeSelector }}
       nodeSelector:
@@ -101,3 +110,4 @@ spec:
         resources:
           requests:
             storage: {{ .Values.mongo.persistence.size }}
+{{- end }}
