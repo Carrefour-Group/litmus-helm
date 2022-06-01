@@ -40,7 +40,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             [
-                "while [[ $(curl -sw '%{http_code}' http://{{ include "litmus-portal.fullname" . }}-mongo:{{ .Values.adminConfig.DB_PORT }} -o /dev/null) -ne 200 ]]; do sleep 5; echo 'Waiting for the MongoDB to be ready...'; done; echo 'Connection with MongoDB established'",
+                "while [[ $(curl -sw '%{http_code}' http://{{ include "mongodb.service.nameOverride" .Subcharts.mongodb }}:{{ .Values.mongodb.service.ports.mongodb }} -o /dev/null) -ne 200 ]]; do sleep 5; echo 'Waiting for the MongoDB to be ready...'; done; echo 'Connection with MongoDB established'",
             ]
           resources:
             {{- toYaml .Values.portal.server.waitForMongodb.resources | nindent 12 }}
@@ -55,11 +55,26 @@ spec:
           securityContext:
             {{- toYaml .Values.portal.server.authServer.securityContext | nindent 12 }}
           envFrom:
+            {{- if not .Values.adminConfig.existingSecret }}
             - secretRef:
                 name: {{ include "litmus-portal.fullname" . }}-admin-secret
+            {{- else }}
+                name: {{ .Values.adminConfig.existingSecret }}
+            {{- end }}
             - configMapRef:
                 name: {{ include "litmus-portal.fullname" . }}-admin-config
           env:
+            - name: DB_PASSWORD              
+              {{- if not .Values.mongodb.auth.existingSecret }}
+              value: {{ .Values.mongodb.auth.rootPassword }}
+              {{- else }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mongodb.auth.existingSecret }}
+                  key: mongodb-root-password
+              {{- end }}
+            - name: DB_USER
+              value: {{ .Values.mongodb.auth.rootUser }}
             - name: LITMUS_GQL_GRPC_ENDPOINT
               value: "{{ include "litmus-portal.fullname" . }}-server-service"
             {{- range $key, $val := .Values.portal.server.authServer.env }}
