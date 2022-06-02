@@ -70,8 +70,8 @@ spec:
               port: gql-server
             {{- toYaml .Values.portal.server.graphqlServer.readinessProbe | nindent 12 }}
           envFrom:
-            {{- if not .Values.adminConfig.existingSecret }}
             - secretRef:
+            {{- if not .Values.adminConfig.existingSecret }}
                 name: {{ include "litmus-portal.fullname" . }}-admin-secret
             {{- else }}
                 name: {{ .Values.adminConfig.existingSecret }}
