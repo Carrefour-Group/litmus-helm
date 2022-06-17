@@ -2,4 +2,4 @@ remote: litmus
 chart-dirs:
   - charts
 chart-repos:
-  - mongodb=https://charts.bitnami.com/bitnami
+  - bitnami=https://charts.bitnami.com/bitnami
