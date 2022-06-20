@@ -22,6 +22,10 @@ A Helm chart to install ChaosCenter
 
 Kubernetes: `>=1.16.0-0`
 
+| Repository | Name | Version |
+|------------|------|---------|
+| https://charts.bitnami.com/bitnami | mongodb | 12.1.11 |
+
 ## Installing the Chart
 
 To install this chart with the release name `litmus-portal`:
@@ -37,14 +41,14 @@ $ helm install litmus-portal litmuschaos/litmus
 |-----|------|---------|-------------|
 | adminConfig.ADMIN_PASSWORD | string | `"litmus"` |  |
 | adminConfig.ADMIN_USERNAME | string | `"admin"` |  |
-| adminConfig.DBPASSWORD | string | `"1234"` |  |
-| adminConfig.DBUSER | string | `"admin"` | leave empty if uses Mongo DB deployed by this chart |
-| adminConfig.DB_PORT | string | `"27017"` | leave empty if uses Mongo DB deployed by this chart |
-| adminConfig.DB_SERVER | string | `""` | leave empty if uses Mongo DB deployed by this chart |
+| adminConfig.DBPASSWORD | string | `""` | leave empty if uses Mongo DB deployed by this chart |
+| adminConfig.DBUSER | string | `""` |  |
+| adminConfig.DB_PORT | string | `""` |  |
+| adminConfig.DB_SERVER | string | `""` |  |
 | adminConfig.JWTSecret | string | `"litmus-portal@123"` |  |
 | adminConfig.SKIP_SSL_VERIFY | string | `"false"` |  |
 | adminConfig.VERSION | string | `"2.10.0"` |  |
-| adminConfig.existingSecret | string | `""` | Existing secret with required credentials (keys: `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`) and if Mongo DB is not deployed by this chart add (keys: `DB_USER`, `DB_PASSWORD`) |
+| adminConfig.existingSecret | string | `""` | use already present secret |
 | customLabels | object | `{}` | Additional labels |
 | image.imagePullSecrets | list | `[]` |  |
 | image.imageRegistryName | string | `"litmuschaos"` |  |
@@ -56,7 +60,7 @@ $ helm install litmus-portal litmuschaos/litmus
 | ingress.ingressClassName | string | `""` |  |
 | ingress.name | string | `"litmus-ingress"` |  |
 | ingress.tls | list | `[]` |  |
-| mongodb.enabled | bool | `true` | Weather or not deploy Bitnami MongoDB |
+| mongodb | object | `{"architecture":"replicaset","auth":{"enabled":true,"existingSecret":"","rootPassword":"superhardpassword"},"enabled":true,"metrics":{"enabled":false,"prometheusRule":{"enabled":false}},"replicaCount":3,"useStatefulSet":true}` | Configure the Bitnami MongoDB subchart see values at https://github.com/bitnami/charts/blob/master/bitnami/mongodb/values.yaml |
 | nameOverride | string | `""` |  |
 | openshift.route.annotations | object | `{}` |  |
 | openshift.route.enabled | bool | `false` |  |
@@ -92,7 +96,7 @@ $ helm install litmus-portal litmuschaos/litmus
 | portal.frontend.service.annotations | object | `{}` |  |
 | portal.frontend.service.port | int | `9091` |  |
 | portal.frontend.service.targetPort | int | `8080` |  |
-| portal.frontend.service.type | string | `"NodePort"` |  |
+| portal.frontend.service.type | string | `"ClusterIP"` |  |
 | portal.frontend.tolerations | list | `[]` |  |
 | portal.frontend.updateStrategy | object | `{}` |  |
 | portal.frontend.virtualService.enabled | bool | `false` |  |
@@ -183,7 +187,7 @@ $ helm install litmus-portal litmuschaos/litmus
 | portal.server.service.graphqlRpcServer.targetPort | int | `8000` |  |
 | portal.server.service.graphqlServer.port | int | `9002` |  |
 | portal.server.service.graphqlServer.targetPort | int | `8080` |  |
-| portal.server.service.type | string | `"NodePort"` |  |
+| portal.server.service.type | string | `"ClusterIP"` |  |
 | portal.server.serviceAccountName | string | `"litmus-server-account"` |  |
 | portal.server.tolerations | list | `[]` |  |
 | portal.server.updateStrategy | object | `{}` |  |
