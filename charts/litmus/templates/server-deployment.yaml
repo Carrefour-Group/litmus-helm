@@ -71,11 +71,11 @@ spec:
             {{- toYaml .Values.portal.server.graphqlServer.readinessProbe | nindent 12 }}
           envFrom:
             - secretRef:
-            {{- if not .Values.adminConfig.existingSecret }}
+                {{- if not .Values.adminConfig.existingSecret }}
                 name: {{ include "litmus-portal.fullname" . }}-admin-secret
-            {{- else }}
+                {{- else }}
                 name: {{ .Values.adminConfig.existingSecret }}
-            {{- end }}
+                {{- end }}
             - configMapRef:
                 name: {{ include "litmus-portal.fullname" . }}-admin-config
           env:
