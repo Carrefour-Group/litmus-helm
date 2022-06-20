@@ -38,12 +38,13 @@ $ helm install litmus-portal litmuschaos/litmus
 | adminConfig.ADMIN_PASSWORD | string | `"litmus"` |  |
 | adminConfig.ADMIN_USERNAME | string | `"admin"` |  |
 | adminConfig.DBPASSWORD | string | `"1234"` |  |
-| adminConfig.DBUSER | string | `"admin"` |  |
-| adminConfig.DB_PORT | string | `"27017"` |  |
+| adminConfig.DBUSER | string | `"admin"` | leave empty if uses Mongo DB deployed by this chart |
+| adminConfig.DB_PORT | string | `"27017"` | leave empty if uses Mongo DB deployed by this chart |
 | adminConfig.DB_SERVER | string | `""` | leave empty if uses Mongo DB deployed by this chart |
 | adminConfig.JWTSecret | string | `"litmus-portal@123"` |  |
 | adminConfig.SKIP_SSL_VERIFY | string | `"false"` |  |
 | adminConfig.VERSION | string | `"2.10.0"` |  |
+| adminConfig.existingSecret | string | `""` | Existing secret with required credentials (keys: `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`) and if Mongo DB is not deployed by this chart add (keys: `DB_USER`, `DB_PASSWORD`) |
 | customLabels | object | `{}` | Additional labels |
 | image.imagePullSecrets | list | `[]` |  |
 | image.imageRegistryName | string | `"litmuschaos"` |  |
@@ -55,37 +56,7 @@ $ helm install litmus-portal litmuschaos/litmus
 | ingress.ingressClassName | string | `""` |  |
 | ingress.name | string | `"litmus-ingress"` |  |
 | ingress.tls | list | `[]` |  |
-| mongo.affinity | object | `{}` |  |
-| mongo.automountServiceAccountToken | bool | `false` |  |
-| mongo.containerPort | int | `27017` |  |
-| mongo.customLabels | object | `{}` |  |
-| mongo.image.pullPolicy | string | `"Always"` |  |
-| mongo.image.repository | string | `"mongo"` |  |
-| mongo.image.tag | string | `"4.2.8"` |  |
-| mongo.livenessProbe.failureThreshold | int | `5` |  |
-| mongo.livenessProbe.initialDelaySeconds | int | `30` |  |
-| mongo.livenessProbe.periodSeconds | int | `10` |  |
-| mongo.livenessProbe.successThreshold | int | `1` |  |
-| mongo.livenessProbe.timeoutSeconds | int | `5` |  |
-| mongo.nodeSelector | object | `{}` |  |
-| mongo.persistence.accessMode | string | `"ReadWriteOnce"` |  |
-| mongo.persistence.size | string | `"20Gi"` |  |
-| mongo.readinessProbe.initialDelaySeconds | int | `5` |  |
-| mongo.readinessProbe.periodSeconds | int | `10` |  |
-| mongo.readinessProbe.successThreshold | int | `1` |  |
-| mongo.readinessProbe.timeoutSeconds | int | `1` |  |
-| mongo.replicas | int | `1` |  |
-| mongo.resources.limits.cpu | string | `"550m"` |  |
-| mongo.resources.limits.ephemeral-storage | string | `"3Gi"` |  |
-| mongo.resources.limits.memory | string | `"712Mi"` |  |
-| mongo.resources.requests.cpu | string | `"225m"` |  |
-| mongo.resources.requests.ephemeral-storage | string | `"1Gi"` |  |
-| mongo.resources.requests.memory | string | `"300Mi"` |  |
-| mongo.securityContext.allowPrivilegeEscalation | bool | `false` |  |
-| mongo.service.port | int | `27017` |  |
-| mongo.service.targetPort | int | `27017` |  |
-| mongo.service.type | string | `"ClusterIP"` |  |
-| mongo.tolerations | list | `[]` |  |
+| mongodb.enabled | bool | `true` | Weather or not deploy Bitnami MongoDB |
 | nameOverride | string | `""` |  |
 | openshift.route.annotations | object | `{}` |  |
 | openshift.route.enabled | bool | `false` |  |
