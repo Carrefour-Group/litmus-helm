@@ -263,6 +263,9 @@ portal:
           memory: "712Mi"
           cpu: "550m"
           ephemeral-storage: "1Gi"
+      volumeMounts: []
+      volumes: []
+      
     service:
       annotations: {}
       type: ClusterIP
