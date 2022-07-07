@@ -107,11 +107,11 @@ spec:
             - name: {{ $key }}
               value: {{ $val | quote }}
             {{- end }}
-          {{- with .Values.server.authServer.volumeMounts }}
+          {{- with .Values.portal.server.authServer.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.server.authServer.volumes }}
+      {{- with .Values.portal.server.authServer.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
